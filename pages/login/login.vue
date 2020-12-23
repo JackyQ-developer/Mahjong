@@ -25,13 +25,14 @@
 </template>
 
 <script>
+  import { login } from '@/api/user'
 	export default {
 		data() {
 			return {
 				hideEyes: false,
         formData: {
-          username: '',
-          password: ''
+          username: 'JackyQ',
+          password: 'xiaowo12'
         }
 			}
 		},
@@ -39,8 +40,11 @@
 			passwordF_B() {
 				this.hideEyes = !this.hideEyes;
 			},
-			formSubmit(e) {
-				console.log(this.formData);
+			async formSubmit(e) {
+        await login(this.formData)
+        uni.switchTab({
+          url: '/pages/tabbar/tabbar-1/tabbar-1'
+        })
 			}
 		}
 	}

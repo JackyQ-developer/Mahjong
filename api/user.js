@@ -1,8 +1,8 @@
 import request from '@/utils/request'
-// 123
+
 export function login(data) {
   return request({
-    url: '/sys/user/login',
+    url: '/login',
     method: 'post',
     data
   })
