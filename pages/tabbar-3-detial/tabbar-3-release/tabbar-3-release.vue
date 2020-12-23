@@ -14,24 +14,42 @@
       </view>
     </view>
     
-    <view class="sum">
+    <uni-popup ref="popup" type="dialog">
+        <uni-popup-dialog title="请输入金额" mode="input" :value="defaultValue" :duration="2000" @confirm="confirm">
+          214214214214
+        </uni-popup-dialog>
+    </uni-popup>
+    
+    <view class="sum" @click="open">
       +
     </view>
 	</view>
 </template>
 
 <script>
+  import uniPopup from '@/components/uni-popup/uni-popup.vue'
+  import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
 	export default {
+    components: {
+        uniPopup,
+        uniPopupDialog
+    },
 		data() {
 			return {
-				title: 'Hello'
+				title: 'Hello',
+        defaultValue: 0
 			}
 		},
 		onLoad() {
 
 		},
 		methods: {
-
+      confirm(done, value) {
+        console.log(value)
+      },
+      open() {
+        this.$refs.popup.open()
+      }
 		}
 	}
 </script>
