@@ -6,18 +6,18 @@
 		  <text>出: 1000元</text>
 		</view>
     <view class="list">
-      <view class="item">
-        <text class="icon green">入</text>
-        <text class="icon red">出</text>
-        <text>时间: 2020-12-23 16:00:00</text>
-        <text>金额: <text class="red">200</text>元</text>
+      <view class="item" v-for="(item, index) in items" :key="index">
+        <text v-show="item.type === 1" class="icon green">入</text>
+        <text v-show="item.type === 2" class="icon red">出</text>
+        <text style="margin: 0 30rpx;">时间: {{ item.createdAt | datetimeFormatter }}</text>
+        <text>金额: <text :class="item.type === 1? 'green' : 'red'">{{ item.money }}</text>元</text>
       </view>
     </view>
     
+    <uni-load-more v-if="showLoadMore" :status="loadMoreStatus" />
+    
     <uni-popup ref="popup" type="dialog">
-        <uni-popup-dialog title="请输入金额" mode="input" :value="defaultValue" :duration="2000" @confirm="confirm">
-          214214214214
-        </uni-popup-dialog>
+        <uni-popup-dialog title="请输入金额" mode="input" :value="defaultValue" :duration="2000" @confirm="confirm" />
     </uni-popup>
     
     <view class="sum" @click="open">
@@ -29,23 +29,53 @@
 <script>
   import uniPopup from '@/components/uni-popup/uni-popup.vue'
   import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
+  import ListMixIn from '@/mixins/list'
+  import { getRecordList, addRecord } from '@/api/record'
 	export default {
     components: {
         uniPopup,
         uniPopupDialog
     },
+    mixins: [ListMixIn],
 		data() {
 			return {
 				title: 'Hello',
-        defaultValue: 0
+        defaultValue: '',
+        listQuery: {
+          page: 1,
+          limit: 20
+        },
+        items: [],
+        total: 0
 			}
 		},
 		onLoad() {
-
+      this.getData('initData')
 		},
 		methods: {
-      confirm(done, value) {
-        console.log(value)
+      async getData(modeFunction) {
+      	const res = await getRecordList(this.listQuery)
+      	this[modeFunction](res)
+      },
+      async confirm(done, value) {
+        const money = Number(value)
+        const type = money > 0 ? 1 : 2;
+        if (value === '') {
+          return uni.showToast({
+            title: '不能为空'
+          })
+        } else if (isNaN(money)) {
+          return uni.showToast({
+            title: '请输入数字'
+          })
+        }
+        
+        await addRecord({ money, type })
+        done()
+        uni.showToast({
+          title: '保存成功',
+          icon: 'success'
+        })
       },
       open() {
         this.$refs.popup.open()
@@ -87,7 +117,6 @@
       width: 96%;
       margin: 0 auto;
       display: flex;
-      justify-content: space-around;
       border-top: 1px solid #999;
       padding: 8px 0;
       

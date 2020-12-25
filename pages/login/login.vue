@@ -26,6 +26,7 @@
 
 <script>
   import { login } from '@/api/user'
+  import { getToken, setToken } from '@/utils/auth'
 	export default {
 		data() {
 			return {
@@ -41,7 +42,8 @@
 				this.hideEyes = !this.hideEyes;
 			},
 			async formSubmit(e) {
-        await login(this.formData)
+        const res = await login(this.formData)
+        setToken(res.data.token)
         uni.switchTab({
           url: '/pages/tabbar/tabbar-1/tabbar-1'
         })

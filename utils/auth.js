@@ -3,6 +3,7 @@ const TokenKey = 'Admin-Token'
 export function getToken() {
   try {
     const value = uni.getStorageSync(TokenKey);
+    console.log(value)
     return value
   } catch (e) {
     // error
