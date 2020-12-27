@@ -41,7 +41,7 @@ export default {
 			total: 0
 		};
 	},
-	created() {
+	onLoad() {
 		this.init()
 	},
 	onPullDownRefresh() {
@@ -86,6 +86,10 @@ export default {
 			this.items = res.data.items
 			this.listQuery.page = 2
 			this.total = res.data.total
+			
+			for (let key in res.data) {
+				if (this.hasOwnProperty(key)) this[key] = res.data[key]
+			}
 		},
 		/**
 		 * @description 追加数据
@@ -95,6 +99,10 @@ export default {
 			this.items = this.items.concat(res.data.items)
 			this.listQuery.page++
 			this.total = res.data.total
+			
+			for (let key in res.data) {
+				if (this.hasOwnProperty(key)) this[key] = res.data[key]
+			}
 		},
 		// ListTouch触摸开始
 		ListTouchStart(e) {
