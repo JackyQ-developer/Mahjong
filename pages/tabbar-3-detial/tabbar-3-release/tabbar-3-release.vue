@@ -1,9 +1,9 @@
 <template>
 	<view class="content">
 		<view class="statistics">
-			<text>总: 10000元</text>
-			<text>入: 11000元</text>
-			<text>出: 1000元</text>
+			<text>总: {{ sum }}元</text>
+			<text>入: {{ collect }}元</text>
+			<text>出: {{ pay }}元</text>
 		</view>
 		<view class="list">
 			<view class="item" v-for="(item, index) in items" :key="index">
@@ -15,12 +15,13 @@
 		</view>
 
 		<uni-load-more v-if="showLoadMore" :status="loadMoreStatus" />
+    <text v-if="items.length === 0" class="no-data">暂无数据</text>
 
 		<uni-popup ref="popup" type="dialog">
 			<uni-popup-dialog title="请输入金额" mode="input" :value="defaultValue" :duration="2000" @confirm="confirm" />
 		</uni-popup>
 
-		<view class="sum" @click="open">
+		<view class="sum-button" @click="open">
 			+
 		</view>
 	</view>
@@ -45,21 +46,27 @@
 				defaultValue: '',
 				listQuery: {
 					page: 1,
-					limit: 20
-				},
-				statisticsQuery: {
-					datetime: new Date(new Date().toLocaleDateString())
+					limit: 20,
+          datetime: new Date(new Date().toLocaleDateString())
 				},
 				items: [],
-				total: 0
+				total: 0,
+        collect: 0,
+        pay: 0,
+        sum: 0
 			}
 		},
 		methods: {
 			async getData(modeFunction) {
 				const res = await getRecordList(this.listQuery)
-				const res2 = await getStatisticsRecord(this.statisticsQuery)
-				console.log(res2.data)
-				this[modeFunction](res)
+				const res2 = await getStatisticsRecord(this.listQuery)
+        const tmpData = {
+          ...res.data,
+          ...res2.data
+        }
+				this[modeFunction]({
+          data: tmpData
+        })
 			},
 			async confirm(done, value) {
 				const money = Number(value)
@@ -103,21 +110,6 @@
 		border-bottom: 1px solid #EEEEEE;
 		box-shadow: 0px 12px 8px -12px #000;
 		border-radius: 10px;
-	}
-
-	.sum {
-		position: fixed;
-		font-size: 80rpx;
-		width: 100rpx;
-		height: 100rpx;
-		text-align: center;
-		vertical-align: middle;
-		line-height: 90rpx;
-		border-radius: 100rpx;
-		background: rgba($color: #333, $alpha: 0.1);
-		color: #333;
-		right: 40rpx;
-		bottom: 60px;
 	}
 
 	.list {

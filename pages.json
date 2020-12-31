@@ -58,6 +58,14 @@
     "backgroundColor": "#fff",
     "color": "#8F8F94",
     "selectedColor": "#f33e54",
+    "midButton":{
+      "iconPath":"static/img/tabbar/add.png",
+      "backgroundImage": "static/img/tabbar/addbg.png",
+      "width": "80px",
+      "height": "80px",
+      "iconWidth":"40px",
+      "text":"发布"
+    },
     "list": [
       {
         "pagePath": "pages/tabbar/tabbar-1/tabbar-1",
@@ -71,21 +79,21 @@
         "selectedIconPath": "static/img/tabbar/guanzhuactive.png",
         "text": "关注"
       },
-      //#ifdef MP-WEIXIN
-      {
-        "pagePath": "pages/tabbar/tabbar-3/tabbar-3",
-        "iconPath": "static/img/tabbar/add.png",
-        "selectedIconPath": "static/img/tabbar/addactive.png",
-        "text": "发布"
-      },
-      //#endif
-      //#ifndef MP-WEIXIN
-      {
-        "pagePath": "pages/tabbar/tabbar-3/tabbar-3",
-        "iconPath": "static/img/tabbar/add.png",
-        "selectedIconPath": "static/img/tabbar/addactive.png"
-      },
-      //#endif
+      // //#ifdef MP-WEIXIN
+      // {
+      //   "pagePath": "pages/tabbar/tabbar-3/tabbar-3",
+      //   "iconPath": "static/img/tabbar/add.png",
+      //   "selectedIconPath": "static/img/tabbar/addactive.png",
+      //   "text": "发布"
+      // },
+      // //#endif
+      // //#ifndef MP-WEIXIN
+      // {
+      //   "pagePath": "pages/tabbar/tabbar-3/tabbar-3",
+      //   "iconPath": "static/img/tabbar/add.png",
+      //   "selectedIconPath": "static/img/tabbar/addactive.png"
+      // },
+      // //#endif
       {
         "pagePath": "pages/tabbar/tabbar-4/tabbar-4",
         "iconPath": "static/img/tabbar/news.png",

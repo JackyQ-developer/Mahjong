@@ -101,7 +101,7 @@ export default {
 			this.total = res.data.total
 			
 			for (let key in res.data) {
-				if (this.hasOwnProperty(key)) this[key] = res.data[key]
+				if (this.hasOwnProperty(key) && key !== 'items') this[key] = res.data[key]
 			}
 		},
 		// ListTouch触摸开始
