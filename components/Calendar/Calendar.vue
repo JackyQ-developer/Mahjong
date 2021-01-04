@@ -71,7 +71,7 @@
       initMonth: { //初始化的月数
         type: [String, Number],
         default () {
-          return 6
+          return 12
         }
       },
       themeColor: { //主题色
@@ -251,9 +251,9 @@
         }
         if (this.mode == 2) {
           if (_date == this.endDates) {
-            tip = "离开";
+            tip = "结束";
           } else if (_date == this.startDates) {
-            tip = "入住";
+            tip = "开始";
           }
         } else if (this.mode == 3) {
           if (_date == this.startDates && !this.endDates) {
@@ -441,6 +441,8 @@
         padding-bottom: 10px;
         font-size: 0;
         border-bottom: 1px solid #F4F4F4;
+        padding-left: 0;
+        text-align: left;
 
         .each-day {
           position: relative;
