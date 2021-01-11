@@ -31,7 +31,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 /*每个页面公共css */ 
 
   /**
@@ -60,5 +60,15 @@ export default {
 		color: #333;
 		right: 40rpx;
 		bottom: 60px;
+    animation: rotate 2s linear infinite;
 	}
+  
+  @keyframes rotate {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>

@@ -1,10 +1,11 @@
 import axios from '@/js_sdk/gangdiedao-uni-axios'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import Config from '@/common/config.js'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: 'http://127.0.0.1:7001', // url = base url + request url
+  baseURL: Config.domain, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
@@ -59,8 +60,9 @@ service.interceptors.response.use(
           content: '你已经退出登录，可以取消继续留在该页面，或者重新登录',
           success: function (res) {
             if (res.confirm) {
+              console.log(store)
               store.dispatch('page/user/resetToken').then(() => {
-                uni.navigateTo({
+                uni.redirectTo({
                   url: '/pages/login/login'
                 });
               })

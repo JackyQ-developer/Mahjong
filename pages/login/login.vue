@@ -25,6 +25,8 @@
 </template>
 
 <script>
+  import store from '@/store'
+  import { mapActions } from 'vuex'
   import { login } from '@/api/user'
   import { getToken, setToken } from '@/utils/auth'
 	export default {
@@ -38,12 +40,14 @@
 			}
 		},
 		methods: {
+      ...mapActions({
+      	loginRequest: store.actionTypes.page.user.login
+      }),
 			passwordF_B() {
 				this.hideEyes = !this.hideEyes;
 			},
 			async formSubmit(e) {
-        const res = await login(this.formData)
-        setToken(res.data.token)
+        await this.loginRequest(this.formData)
         uni.switchTab({
           url: '/pages/tabbar/tabbar-1/tabbar-1'
         })

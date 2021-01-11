@@ -1,6 +1,7 @@
 <template>
 	<view class="content">
-		<view class="statistics">
+		<view :class="statisticsStyle">
+      <text>{{ total }}局</text>
 			<text>总: {{ sum }}元</text>
 			<text>入: {{ collect }}元</text>
 			<text>出: {{ pay }}元</text>
@@ -42,12 +43,13 @@
 		mixins: [ListMixIn],
 		data() {
 			return {
-				title: 'Hello',
+				statisticsStyle: 'statistics',
 				defaultValue: '',
 				listQuery: {
 					page: 1,
 					limit: 20,
-          datetime: new Date(new Date().toLocaleDateString())
+          startTime: new Date(new Date().toLocaleDateString()),
+          endTime: new Date()
 				},
 				items: [],
 				total: 0,
@@ -56,8 +58,16 @@
         sum: 0
 			}
 		},
+    onPageScroll(scroll) {
+      if (scroll.scrollTop >= 20 && this.statisticsStyle != 'statistics-fixed') {
+        this.statisticsStyle = 'statistics-fixed'
+      } else if (scroll.scrollTop < 20 && this.statisticsStyle != 'statistics') {
+        this.statisticsStyle = 'statistics'
+      }
+    },
 		methods: {
 			async getData(modeFunction) {
+        this.listQuery.endTime = new Date()
 				const res = await getRecordList(this.listQuery)
 				const res2 = await getStatisticsRecord(this.listQuery)
         const tmpData = {
@@ -103,15 +113,42 @@
 	.statistics {
 		display: flex;
 		justify-content: space-around;
-		width: 600rpx;
-		margin: 20px auto;
+		margin: 0 auto;
 		padding: 10px 40rpx;
 		background-color: #E7E7E7;
 		border-bottom: 1px solid #EEEEEE;
 		box-shadow: 0px 12px 8px -12px #000;
-		border-radius: 10px;
 	}
+  
+  .statistics-fixed {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+  	display: flex;
+  	justify-content: space-around;
+  	margin: 0 auto;
+  	padding: 10px 40rpx;
+  	background-color: #E7E7E7;
+  	border-bottom: 1px solid #EEEEEE;
+  	box-shadow: 0px 12px 8px -12px #000;
+  	border-radius: 10px;
+    animation: navbar 0.5s linear forwards;
+  }
+  
+  @keyframes navbar {
+    from {
+      top: 0;
+      width: 100%;
+    }
+    to {
+      top: 50px;
+      width: 600rpx;
+    }
+  }
 
+  .content {
+    font-size: 36rpx;
+  }
 	.list {
 		.item {
 			position: relative;
